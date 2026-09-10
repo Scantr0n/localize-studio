@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parent
@@ -6,8 +7,11 @@ STORAGE_DIR = BACKEND_DIR / "storage"
 JOBS_DIR = STORAGE_DIR / "jobs"
 JOBS_DIR.mkdir(parents=True, exist_ok=True)
 
-FFMPEG_BIN = "/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg"
-FFPROBE_BIN = "/opt/homebrew/opt/ffmpeg-full/bin/ffprobe"
+_MAC_FFMPEG = "/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg"
+_MAC_FFPROBE = "/opt/homebrew/opt/ffmpeg-full/bin/ffprobe"
+
+FFMPEG_BIN = _MAC_FFMPEG if os.path.exists(_MAC_FFMPEG) else (shutil.which("ffmpeg") or "ffmpeg")
+FFPROBE_BIN = _MAC_FFPROBE if os.path.exists(_MAC_FFPROBE) else (shutil.which("ffprobe") or "ffprobe")
 
 WHISPER_MODEL = "large-v3"
 WHISPER_DEVICE = "cpu"
